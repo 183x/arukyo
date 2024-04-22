@@ -40,6 +40,17 @@
             /* マージンを追加して要素を分ける */
         }
         
+        p {
+            background-color: rgba(255, 255, 255, 0.8);
+            /* 薄い白色の半透明背景を調整 */
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            /* マージンを追加して要素を分ける */
+        }
+        
         button {
             padding: 15px 30px;
             font-size: 20px;
@@ -97,8 +108,8 @@
     <div id="elapsedTime"></div>
 
     <script>
-        // 開始日時: 2024年4月13日21時48分
         const startDate = new Date(2024, 3, 13, 21, 48, 0);
+        let heartCount = getHeartCountFromCookie() || 0; // 初期値はCookieから取得、未保存の場合は0
 
         function updateElapsedTime() {
             const currentDate = new Date();
@@ -116,31 +127,6 @@
                 付き合ってから${years}年 ${months}ヶ月 ${days}日 ${hours}時間 ${minutes}分 ${seconds}秒
             `;
         }
-
-        setInterval(updateElapsedTime, 1000);
-        updateElapsedTime();
-    </script>
-
-    <button onclick="showHearts()">ハートを送る♡</button>
-    <p>ハートを送った回数: <span id="heartCountDisplay">${heartCount}</span></p>
-
-    <script>
-        function showHearts() {
-            const heartContainer = document.body;
-
-            for (let i = 0; i < 3; i++) {
-                const heart = document.createElement('div');
-                heart.className = 'heart';
-                heart.style.left = `${Math.random() * 100}vw`;
-                heart.style.animationDuration = `${Math.random() * 2 + 1}s`;
-                heartContainer.appendChild(heart);
-
-                setTimeout(() => {
-                    heart.remove();
-                }, 2000);
-            }
-        }
-
 
         function getHeartCountFromCookie() {
             const cookies = document.cookie.split(';');
@@ -174,8 +160,16 @@
 
             heartCount++; // ハートカウントを増やす
             setHeartCountToCookie(heartCount); // Cookieに保存
+            document.getElementById('heartCountDisplay').textContent = heartCount; // ハートカウントを表示
         }
+
+        // 初回の表示更新と経過時間の更新を開始
+        updateElapsedTime();
+        setInterval(updateElapsedTime, 1000);
     </script>
+    <p>ハートを送った回数: <span id="heartCountDisplay"></span></p>
+    <button onclick="showHearts()">ハートを送る♡</button>
+
 
 </body>
 
