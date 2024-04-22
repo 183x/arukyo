@@ -10,46 +10,34 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            /* 文字を中央に寄せる */
             background-image: url("https://pbs.twimg.com/media/GLIA2w_b0AANZE7?format=jpg&name=large");
-            /* 画像 */
             background-size: cover;
-            /* 全画面 */
             background-attachment: fixed;
-            /* 固定 */
             background-position: center center;
-            /* 縦横中央 */
             color: #000000;
-            /* 文字色を白に設定 */
             padding: 50px;
-            /* コンテンツの余白を追加 */
         }
         
         h1 {
             font-size: 32px;
-            /* 見出しのフォントサイズを調整 */
         }
         
         #elapsedTime {
             background-color: rgba(255, 255, 255, 0.8);
-            /* 薄い白色の半透明背景を調整 */
             padding: 15px;
             border-radius: 10px;
             font-size: 24px;
             font-weight: bold;
             margin-bottom: 20px;
-            /* マージンを追加して要素を分ける */
         }
         
         p {
             background-color: rgba(255, 255, 255, 0.8);
-            /* 薄い白色の半透明背景を調整 */
             padding: 15px;
             border-radius: 10px;
             font-size: 24px;
             font-weight: bold;
             margin-bottom: 20px;
-            /* マージンを追加して要素を分ける */
         }
         
         button {
@@ -62,7 +50,6 @@
             cursor: pointer;
             outline: none;
             margin-top: 20px;
-            /* ボタンの上部にマージンを追加 */
         }
         
         .heart {
@@ -76,7 +63,6 @@
         
         h1 {
             color: #ffffff;
-            /* h1要素の文字色を白に設定 */
             font-size: 32px;
         }
         
@@ -95,7 +81,6 @@
                 opacity: 0;
             }
         }
-        /* レスポンシブデザイン */
         
         @media only screen and (max-width: 600px) {
             #elapsedTime {
@@ -111,12 +96,12 @@
 
 <body>
     <h1>ある＆きょーか</h1>
-    <h4>記念日 2024年4月13日21時48分</h4>
+    <h4>♡2024年4月13日21時48分♡</h4>
     <div id="elapsedTime"></div>
 
     <script>
         const startDate = new Date(2024, 3, 13, 21, 48, 0);
-        let heartCount = getHeartCountFromCookie() || 0; // 初期値はCookieから取得、未保存の場合は0
+        let heartCount = getHeartCountFromCookie() || 0;
 
         function updateElapsedTime() {
             const currentDate = new Date();
@@ -165,18 +150,16 @@
                 }, 2000);
             }
 
-            heartCount++; // ハートカウントを増やす
-            setHeartCountToCookie(heartCount); // Cookieに保存
-            document.getElementById('heartCountDisplay').textContent = heartCount; // ハートカウントを表示
+            heartCount++;
+            setHeartCountToCookie(heartCount);
+            document.getElementById('heartCountDisplay').textContent = heartCount;
         }
 
-        // 初回の表示更新と経過時間の更新を開始
         updateElapsedTime();
         setInterval(updateElapsedTime, 1000);
     </script>
     <p>ハートを送った回数: <span id="heartCountDisplay"></span></p>
     <button onclick="showHearts()">ハートを送る♡</button>
-
 
 </body>
 
