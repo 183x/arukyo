@@ -62,6 +62,12 @@
             animation: animateHeart 2s ease-out;
         }
         
+        h1 {
+            color: #ffffff;
+            /* h1要素の文字色を白に設定 */
+            font-size: 32px;
+        }
+        
         @keyframes animateHeart {
             0% {
                 transform: translateY(0) scale(1);
@@ -82,12 +88,6 @@
                 font-size: 16px;
                 padding: 12px 24px;
             }
-        }
-
-         h1 {
-            color: #ffffff;
-            /* h1要素の文字色を白に設定 */
-            font-size: 32px;
         }
     </style>
 </head>
@@ -122,6 +122,7 @@
     </script>
 
     <button onclick="showHearts()">ハートを送る♡</button>
+    <p>ハートを送った回数: <span id="heartCountDisplay">${heartCount}</span></p>
 
     <script>
         function showHearts() {
@@ -138,6 +139,41 @@
                     heart.remove();
                 }, 2000);
             }
+        }
+
+
+        function getHeartCountFromCookie() {
+            const cookies = document.cookie.split(';');
+            for (const cookie of cookies) {
+                const [name, value] = cookie.trim().split('=');
+                if (name === 'heartCount') {
+                    return parseInt(value) || 0;
+                }
+            }
+            return 0;
+        }
+
+        function setHeartCountToCookie(count) {
+            document.cookie = `heartCount=${count}`;
+        }
+
+        function showHearts() {
+            const heartContainer = document.body;
+
+            for (let i = 0; i < 3; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.style.left = `${Math.random() * 100}vw`;
+                heart.style.animationDuration = `${Math.random() * 2 + 1}s`;
+                heartContainer.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 2000);
+            }
+
+            heartCount++; // ハートカウントを増やす
+            setHeartCountToCookie(heartCount); // Cookieに保存
         }
     </script>
 
