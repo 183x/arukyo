@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ある＆きょーか</title>
     <style>
         body {
@@ -25,36 +26,39 @@
             /* コンテンツの余白を追加 */
         }
         
-        #elapsedTime {
-            background-color: rgba(255, 255, 255, 0.5);
-            /* 薄い白色の半透明背景 */
-            padding: 20px;
-            /* 内側の余白 */
-            border-radius: 10px;
-            /* 角丸 */
+        h1 {
             font-size: 32px;
-            /* フォントサイズを大きく */
+            /* 見出しのフォントサイズを調整 */
+        }
+        
+        #elapsedTime {
+            background-color: rgba(255, 255, 255, 0.8);
+            /* 薄い白色の半透明背景を調整 */
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 24px;
             font-weight: bold;
-            /* 太字にする */
-            display: inline-block;
-            /* テキスト幅に合わせる */
+            margin-bottom: 20px;
+            /* マージンを追加して要素を分ける */
         }
         
         button {
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 15px 30px;
+            font-size: 20px;
             background-color: #ff69b4;
             color: #fff;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             outline: none;
+            margin-top: 20px;
+            /* ボタンの上部にマージンを追加 */
         }
         
         .heart {
             position: absolute;
-            width: 20px;
-            height: 20px;
+            width: 30px;
+            height: 30px;
             background-color: #ff69b4;
             clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
             animation: animateHeart 2s ease-out;
@@ -70,6 +74,17 @@
                 opacity: 0;
             }
         }
+        /* レスポンシブデザイン */
+        
+        @media only screen and (max-width: 600px) {
+            #elapsedTime {
+                font-size: 20px;
+            }
+            button {
+                font-size: 16px;
+                padding: 12px 24px;
+            }
+        }
     </style>
 </head>
 
@@ -79,54 +94,45 @@
 
     <script>
         // 開始日時: 2024年4月13日21時48分
-        const startDate = new Date(2024, 3, 13, 21, 48, 0); // 月は0から始まるため、4月は3を指定
+        const startDate = new Date(2024, 3, 13, 21, 48, 0);
 
         function updateElapsedTime() {
-            const currentDate = new Date(); // 現在の日時を取得
-            const elapsedTime = currentDate - startDate; // 経過時間（ミリ秒）を計算
+            const currentDate = new Date();
+            const elapsedTime = currentDate - startDate;
 
-            // ミリ秒から年、月、日、時、分、秒へ変換
             const seconds = Math.floor(elapsedTime / 1000) % 60;
             const minutes = Math.floor(elapsedTime / (1000 * 60)) % 60;
             const hours = Math.floor(elapsedTime / (1000 * 60 * 60)) % 24;
-            const days = Math.floor(elapsedTime / (1000 * 60 * 60 * 24)) % 30; // 月単位ではなく日数を求めるため30で割る
+            const days = Math.floor(elapsedTime / (1000 * 60 * 60 * 24)) % 30;
             const months = Math.floor(elapsedTime / (1000 * 60 * 60 * 24 * 30)) % 12;
             const years = Math.floor(elapsedTime / (1000 * 60 * 60 * 24 * 30 * 12));
 
-            // HTML要素に経過時間を表示
             const elapsedTimeElement = document.getElementById('elapsedTime');
-            elapsedTimeElement.innerHTML = `
+            elapsedTimeElement.textContent = `
                 付き合ってから${years}年 ${months}ヶ月 ${days}日 ${hours}時間 ${minutes}分 ${seconds}秒
             `;
         }
 
-        // 1秒ごとに経過時間を更新
         setInterval(updateElapsedTime, 1000);
-
-        // 初回の表示更新
         updateElapsedTime();
     </script>
-    <br>
-    <br>
-    <br>
+
     <button onclick="showHearts()">ハートを送る♡</button>
 
     <script>
         function showHearts() {
             const heartContainer = document.body;
 
-            // ハートを5個生成して表示
             for (let i = 0; i < 3; i++) {
                 const heart = document.createElement('div');
                 heart.className = 'heart';
-                heart.style.left = `${Math.random() * 100}vw`; // 水平方向のランダムな位置
-                heart.style.animationDuration = `${Math.random() * 2 + 1}s`; // アニメーションの速さ
+                heart.style.left = `${Math.random() * 100}vw`;
+                heart.style.animationDuration = `${Math.random() * 2 + 1}s`;
                 heartContainer.appendChild(heart);
 
-                // 一定時間後にハートを削除
                 setTimeout(() => {
                     heart.remove();
-                }, 2000); // 2秒後に削除
+                }, 2000);
             }
         }
     </script>
