@@ -39,6 +39,37 @@
             display: inline-block;
             /* テキスト幅に合わせる */
         }
+        
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #ff69b4;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            outline: none;
+        }
+        
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #ff69b4;
+            clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+            animation: animateHeart 2s ease-out;
+        }
+        
+        @keyframes animateHeart {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 10;
+            }
+            100% {
+                transform: translateY(-400px) scale(0.3);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 
@@ -75,6 +106,31 @@
         // 初回の表示更新
         updateElapsedTime();
     </script>
+    <br>
+    <br>
+    <br>
+    <button onclick="showHearts()">ハートを送る♡</button>
+
+    <script>
+        function showHearts() {
+            const heartContainer = document.body;
+
+            // ハートを5個生成して表示
+            for (let i = 0; i < 3; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.style.left = `${Math.random() * 100}vw`; // 水平方向のランダムな位置
+                heart.style.animationDuration = `${Math.random() * 2 + 1}s`; // アニメーションの速さ
+                heartContainer.appendChild(heart);
+
+                // 一定時間後にハートを削除
+                setTimeout(() => {
+                    heart.remove();
+                }, 2000); // 2秒後に削除
+            }
+        }
+    </script>
+
 </body>
 
 </html>
