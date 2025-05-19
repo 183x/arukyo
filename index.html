@@ -16,6 +16,7 @@
             height: 100vh;
             overflow: hidden;
         }
+        /* 背景動画 */
         
         video#bgVideo {
             position: fixed;
@@ -34,7 +35,6 @@
             width: 100vw;
             height: 100vh;
             background: rgba(255, 255, 255, 0.3);
-            /* 白フィルター */
             z-index: -1;
         }
         
@@ -109,47 +109,43 @@
             background-color: #ff69b4;
             color: white;
         }
-        /* ローディング画面 */
+        /* 🎀 ローディング画面 */
         
         #loadingScreen {
             position: fixed;
-            z-index: 9999;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: linear-gradient(to bottom right, #ffe4ec, #ffc1da);
+            background: white;
             display: flex;
-            align-items: center;
             justify-content: center;
-            flex-direction: column;
-            font-family: 'Kaisei Tokumin', serif;
-            color: #ff69b4;
-            font-size: 28px;
-            animation: fadeIn 1s ease-in-out;
+            align-items: center;
+            z-index: 9999;
             transition: opacity 1s ease;
         }
-        /* ローディング用のアニメーション（ハートが軽く上下） */
         
-        .heartbeat {
-            font-size: 40px;
-            animation: beat 1s infinite;
+        .draw-svg {
+            width: 350px;
+            height: 100px;
         }
         
-        @keyframes beat {
-            0%,
-            100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.2);
-            }
+        .draw-text {
+            font-family: 'Kaisei Tokumin', serif;
+            font-size: 50px;
+            fill: none;
+            stroke: #ff69b4;
+            stroke-width: 2;
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+            animation: draw 0.5s ease forwards;
+            animation-delay: calc(var(--i) * 0.3s);
+            /* 0.3秒ずつずらす */
         }
         
-        @keyframes fadeOut {
+        @keyframes draw {
             to {
-                opacity: 0;
-                visibility: hidden;
+                stroke-dashoffset: 0;
             }
         }
     </style>
@@ -157,17 +153,26 @@
 
 <body>
 
-    <!-- ローディング画面 -->
+    <!-- 🎀 ローディング画面 -->
     <div id="loadingScreen">
-        <div class="heartbeat"></div>
-        loading...
+        <svg viewBox="0 0 350 100" class="draw-svg" aria-label="loading... animation" role="img">
+            <text x="10" y="70" class="draw-text" style="--i:0;">l</text>
+            <text x="50" y="70" class="draw-text" style="--i:1;">o</text>
+            <text x="90" y="70" class="draw-text" style="--i:2;">a</text>
+            <text x="130" y="70" class="draw-text" style="--i:3;">d</text>
+            <text x="170" y="70" class="draw-text" style="--i:4;">i</text>
+            <text x="190" y="70" class="draw-text" style="--i:5;">n</text>
+            <text x="230" y="70" class="draw-text" style="--i:6;">g</text>
+            <text x="270" y="70" class="draw-text" style="--i:7;">.</text>
+            <text x="310" y="70" class="draw-text" style="--i:8;">.</text>
+        </svg>
     </div>
 
     <!-- 背景動画 -->
     <video id="bgVideo" autoplay loop muted playsinline>
-    <source src="https://pixeldrain.com/api/file/ZLvLZ2kn" type="video/mp4" />
-    お使いのブラウザは video タグに対応していません。
-  </video>
+        <source src="https://pixeldrain.com/api/file/ZLvLZ2kn" type="video/mp4" />
+        お使いのブラウザは video タグに対応していません。
+    </video>
 
     <!-- 白いフィルター -->
     <div class="overlay"></div>
@@ -182,6 +187,7 @@
 
     <!-- 音量ボタン -->
     <button id="soundToggleBtn" onclick="toggleMute()">🔇</button>
+
     <!-- 地図トグル -->
     <div style="margin-top: 20px;">
         <div style="margin-bottom: 10px;">
@@ -190,12 +196,11 @@
         </div>
         <div id="mapContainer">
             <img id="mapImage" src="https://github.com/183x/arukyo/blob/main/mvTYTCqbpQEfoqN1747654176_1747654294.png?raw=true" alt="訪れた場所の地図" style="max-width: 80%; height: auto; border-radius: 20px;" />
-
         </div>
     </div>
 
     <script>
-        const startDate = new Date(2024, 3, 13); // 4月13日（0始まり）
+        const startDate = new Date(2024, 3, 13); // 4月13日
         const elapsedTimeElem = document.getElementById("elapsedTime");
         const nextAnniversaryElem = document.getElementById("nextAnniversary");
 
@@ -237,7 +242,6 @@
             const now = new Date();
             let next = new Date(now.getFullYear(), now.getMonth(), 13);
             if (now.getDate() > 13) next = new Date(now.getFullYear(), now.getMonth() + 1, 13);
-
             const diff = next - now;
             const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
 
@@ -249,54 +253,26 @@
         }
 
         setInterval(updateElapsedTime, 1000);
-        setInterval(updateNextAnniversary, 60 * 1000);
+        setInterval(updateNextAnniversary, 60000);
         updateElapsedTime();
         updateNextAnniversary();
 
         function toggleMute() {
             const video = document.getElementById("bgVideo");
             const btn = document.getElementById("soundToggleBtn");
-
             video.muted = !video.muted;
-
-            if (video.muted) {
-                btn.textContent = "🔇";
-            } else {
-                btn.textContent = "🔊";
-                video.play();
-            }
+            btn.textContent = video.muted ? "🔇" : "🔊";
         }
 
-        // 地図の切り替え機能
-        const mapImage = document.getElementById("mapImage");
-        const toggleJapan = document.getElementById("toggleJapan");
-        const toggleWorld = document.getElementById("toggleWorld");
-
-        toggleJapan.addEventListener("click", () => {
-            mapImage.src = "https://github.com/183x/arukyo/blob/main/mvTYTCqbpQEfoqN1747654176_1747654294.png?raw=true";
-            toggleJapan.classList.add("active");
-            toggleWorld.classList.remove("active");
-        });
-
-        toggleWorld.addEventListener("click", () => {
-            mapImage.src = "https://github.com/183x/arukyo/blob/main/Gk3hbrd8HlFwpQp1747654536_1747654539.png?raw=true";
-            toggleWorld.classList.add("active");
-            toggleJapan.classList.remove("active");
-        });
-
-        // 背景動画の読み込み完了でローディング非表示
-        const video = document.getElementById("bgVideo");
-        const loadingScreen = document.getElementById("loadingScreen");
-
-        video.addEventListener("canplaythrough", () => {
-            loadingScreen.style.opacity = "0";
+        // ローディング画面フェードアウト
+        window.addEventListener('load', () => {
+            const loadingScreen = document.getElementById('loadingScreen');
+            loadingScreen.style.opacity = '0';
             setTimeout(() => {
-                loadingScreen.style.display = "none";
-            }, 1000); // フェードアウトと同期
+                loadingScreen.style.display = 'none';
+            }, 1000);
         });
     </script>
-
-
 
 </body>
 
