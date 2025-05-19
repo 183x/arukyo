@@ -445,9 +445,73 @@
 
 
 
+    <style>
+        .music-wave-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 1px 0;
+            background: transparent;
+        }
+        
+        .music-wave {
+            display: flex;
+            align-items: flex-end;
+            gap: 6px;
+            height: 100px;
+        }
+        
+        .bar {
+            width: 6px;
+            height: 40%;
+            /* 初期の高さ */
+            border-radius: 3px;
+            animation-name: wave;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
+            animation-fill-mode: forwards;
+        }
+        
+        @keyframes wave {
+            0%,
+            100% {
+                transform: scaleY(1);
+            }
+            50% {
+                transform: scaleY(2.5);
+            }
+        }
+    </style>
 
+    <div class="music-wave-container">
+        <div class="music-wave" id="waveContainer"></div>
+    </div>
 
+    <script>
+        const colors = [
+            '#fbbf24', '#fcae1e', '#fb923c', '#f97316', '#ef4444',
+            '#ec4899', '#8b5cf6', '#6366f1', '#3b82f6', '#0ea5e9',
+            '#06b6d4', '#10b981', '#22c55e', '#84cc16', '#eab308'
+        ];
 
+        const waveContainer = document.getElementById('waveContainer');
+
+        for (let i = 0; i < 15; i++) {
+            const bar = document.createElement('div');
+            bar.className = 'bar';
+            bar.style.backgroundColor = colors[i];
+
+            const randDelay = (Math.random() * 0.8).toFixed(2) + 's'; // 0〜0.8秒のランダム遅延
+            const randDuration = (0.6 + Math.random() * 0.8).toFixed(2) + 's'; // 0.6〜1.4秒のランダム長さ
+
+            bar.style.animationDelay = randDelay;
+            bar.style.animationDuration = randDuration;
+
+            waveContainer.appendChild(bar);
+        }
+    </script>
+    <br>
+    <br>
 </body>
 
 </html>
