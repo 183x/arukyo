@@ -5,9 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ある＆きょーか</title>
-
     <link href="https://fonts.googleapis.com/css2?family=Kaisei+Tokumin:wght@700&display=swap" rel="stylesheet" />
-
     <style>
         body {
             margin: 0;
@@ -36,46 +34,54 @@
             width: 100vw;
             height: 100vh;
             background: rgba(255, 255, 255, 0.3);
-            /* 白いフィルター */
+            /* 白フィルター */
             z-index: -1;
         }
         
         h1 {
-            font-size: 36px;
+            font-size: 40px;
             margin-top: 50px;
+            text-shadow: 2px 2px 4px #ffb6c1;
         }
         
-        #elapsedTime,
-        #nextAnniversary {
+        .info-box {
             background-color: rgba(255, 255, 255, 0.85);
-            padding: 15px;
-            border-radius: 10px;
-            font-size: 20px;
-            font-weight: bold;
-            color: #000;
+            color: #333;
+            border-radius: 20px;
+            padding: 20px 30px;
             margin: 20px auto;
             width: fit-content;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(255, 105, 180, 0.2);
+            transition: 0.3s ease;
+        }
+        
+        .info-box:hover {
+            box-shadow: 0 6px 12px rgba(255, 105, 180, 0.5);
         }
         
         #soundToggleBtn {
             font-family: 'Kaisei Tokumin', serif;
-            background-color: #ff69b4;
-            color: white;
-            border: none;
-            padding: 15px 30px;
+            background: white;
+            color: #ff69b4;
+            border: 2px solid #ff69b4;
+            padding: 14px 28px;
             font-size: 18px;
             border-radius: 50px;
-            box-shadow: 0 4px 8px rgba(255, 105, 180, 0.4);
             cursor: pointer;
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(255, 105, 180, 0.3);
             position: fixed;
             bottom: 30px;
             right: 30px;
             z-index: 10;
+            transition: all 0.3s ease;
         }
         
         #soundToggleBtn:hover {
-            box-shadow: 0 6px 12px rgba(255, 105, 180, 0.7);
+            background-color: #ff69b4;
+            color: white;
+            box-shadow: 0 6px 12px rgba(255, 105, 180, 0.6);
             transform: scale(1.05);
         }
     </style>
@@ -88,16 +94,18 @@
     お使いのブラウザは video タグに対応していません。
   </video>
 
-    <!-- 白いオーバーレイ -->
+    <!-- 白いフィルター -->
     <div class="overlay"></div>
 
-    <!-- 記念日表示 -->
+    <!-- タイトル -->
     <h1>ある＆きょーか</h1>
     <h3>♡2024年4月13日♡</h3>
-    <div id="elapsedTime"></div>
-    <div id="nextAnniversary"></div>
 
-    <!-- 音声トグルボタン -->
+    <!-- 記念日情報 -->
+    <div id="elapsedTime" class="info-box"></div>
+    <div id="nextAnniversary" class="info-box"></div>
+
+    <!-- 音量ボタン -->
     <button id="soundToggleBtn" onclick="toggleMute()">🔇</button>
 
     <script>
