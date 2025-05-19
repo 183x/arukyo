@@ -84,13 +84,38 @@
             box-shadow: 0 6px 12px rgba(255, 105, 180, 0.6);
             transform: scale(1.05);
         }
+        
+        .map-toggle-btn {
+            font-family: 'Kaisei Tokumin', serif;
+            background: white;
+            color: #ff69b4;
+            border: 2px solid #ff69b4;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .map-toggle-btn:hover {
+            background-color: #ff69b4;
+            color: white;
+            box-shadow: 0 6px 12px rgba(255, 105, 180, 0.6);
+            transform: scale(1.05);
+        }
+        
+        .map-toggle-btn.active {
+            background-color: #ff69b4;
+            color: white;
+        }
     </style>
 </head>
 
 <body>
     <!-- 背景動画 -->
     <video id="bgVideo" autoplay loop muted playsinline>
-    <source src="https://lh3.googleusercontent.com/pw/AP1GczOKcP1ildMWe1oxfMKEPGfSx4tl1ynlF6YOIyXr7JB0QV3FPsHeckBOpHryM5u23zhgE5txOVA7Ql5FrJ9K5_HIcfhBpZeBCIFYGEDDKH_g7DWwtZNO6oaHjHw34czns8fGiz9yZ4w9CcN-h5QXySVHPImQrQN0w_gDV9K5KGcOJVtPCNyOjUies2X5In5N3_yWyuvUZeQxPx5WmdjvKMfirJXqcf5gM0WMA_LigBVujDw-m40ZSt0RYukliVP4DoMzyR8N7vVosAwBUtRPp3mwXS2UehNp4mAJNtrMJaIj3onLePC9eEbEMVZmDIEJml7Qr4nCYw5bS3hnXQrOXu_kDx4kAwhHwN0YrkuXBzGEy6jbmlyq5f-50BlOHhNIjQEXPyc2RT94QMZtRad3X-vcvSWpDlzW6LjqFiKqSg-vaB3FogXftblRu-IhRbpw6KAs2c28FngemSVxWOfKUefKqVm_xgAGLmEV1tpinM2H6XV-3BtA40_bbZS7twEfiSQv5oS_2v1-CQm-YwGmB11iseSUCM4T6JLvUMAx4UB8Mn2iJyAqgH7aP2lrwRZ1nhpnFLi5_lhFySEcHHycTOH4H06QqhIYVVHDds_Bc6Y1kgmD0c4OkljtZtKGWjsnC5LxbgsHb2Edi-4Lr_vMD6OoPw14PqfCz36ma0HLJD18EQQqLNdQBCUYJfORmspII5usrn1WR_nBXu9ej6nw0SHl7qDTOyxxqCdFfsLg-ZN7BpZq24AZBi7vUmAe7HMfyxZagNOrKUiLPpwGLQWf7Y3P5JkH7EM4PIjBc_AZGBR-cD_MGD5Q-nniAhFtjFjFYHPkDjC4eqUzt34w-dqK24l4sUXDdWBEwduO-8Plm8rj3wzL7LbOHjfrJB9QaTcInW1m-NHwAkO7VRQqjhpS8QzBCXrhnAiQurefbfnb7O6UHT4rKo0jpeGR87asMnUnvr9gK5Org73v65VDPe01coGsYId6lmhHlTnA6K1_fL-cLadvae7bDcLbLv7zr3D6Qi3BibdeU5kGgydTw4_UrLhQ0VwTwjEliG09GsXWDP-o64e1LX5fvnJ0idf0Z_kMU-KZ2nXF8AhqeyP6TMYh0DAp_5BG2VS11hPbIMpdbNPanvEcTvzn=m15?authuser=0&cpn=SZGbZvQCvU-wnq5s&c=WEB_EMBEDDED_PLAYER&cver=1.20250511.22.00" type="video/mp4" />
+    <source src="https://my.microsoftpersonalcontent.com/personal/a74d39fdf7b7cc24/_layouts/15/download.aspx?UniqueId=e6278cb9-7e25-47fd-adae-ce23f5e09f94&Translate=false&tempauth=v1e.eyJzaXRlaWQiOiI5OWNjNDJjNy01ZmNkLTQ3MWUtOTNhYS0wYzY1NDRiMWJmZWIiLCJhcHBpZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDA0ODE3MTBhNCIsImF1ZCI6IjAwMDAwMDAzLTAwMDAtMGZmMS1jZTAwLTAwMDAwMDAwMDAwMC9teS5taWNyb3NvZnRwZXJzb25hbGNvbnRlbnQuY29tQDkxODgwNDBkLTZjNjctNGM1Yi1iMTEyLTM2YTMwNGI2NmRhZCIsImV4cCI6IjE3NDc2NTg2MDcifQ.nRgn4017N8Ceg_gynitN0aTartTHRifpoF69Ki4B063Wnnxmc9xCcW9U4DmkWOrEa3FSompZn6zAXMiWm_RHFlKwT_733YqCFRjGR3Lvrg4_H1s0mWy3GU2aNjMNz7eUHLAbhBFPU9yde7eqDGSNzZd_2wWfvHLPrcIqI_TR6fvbIAopKdzBXSM2qZHhB0DkpWRJjtzsOdiXyXKuqjlkANbZC1gkcW8enCLkzE6Q267SUGSTM-KMXivg9e4PcYXWblFB9ZqCHW8HVLry3IVNjUMx4mmWdg_Rqp4reBmaiTc74GpIElnObK_6TFPCJAlMcpDyNBmd8TUSDgJ5IK7I2fwL7W0AYehp9xWtg67lfdfcNUX1_os1irHs4oUba_2ANRun8n-x_S7DzM6e2zY9s6sux98AfMXCjKLAMx66AJA.kCz--0TdRqRwqziRFv6N7J8RJ-Tgdv5AfqvXfPslAKk&ApiVersion=2.0" type="video/mp4" />
     お使いのブラウザは video タグに対応していません。
   </video>
 
@@ -107,6 +132,18 @@
 
     <!-- 音量ボタン -->
     <button id="soundToggleBtn" onclick="toggleMute()">🔇</button>
+
+    <!-- 地図トグル -->
+    <div style="margin-top: 20px;">
+        <div style="margin-bottom: 10px;">
+            <button id="toggleJapan" class="map-toggle-btn active">🗾 日本</button>
+            <button id="toggleWorld" class="map-toggle-btn">🌏 世界</button>
+        </div>
+        <div id="mapContainer">
+            <img id="mapImage" src="https://github.com/183x/arukyo/blob/main/mvTYTCqbpQEfoqN1747654176_1747654294.png?raw=true" alt="訪れた場所の地図" style="max-width: 90%; height: auto; border-radius: 20px;" />
+
+        </div>
+    </div>
 
     <script>
         const startDate = new Date(2024, 3, 13); // 4月13日（0始まり）
@@ -180,7 +217,27 @@
                 video.play();
             }
         }
+
+        // 地図の切り替え機能
+        const mapImage = document.getElementById("mapImage");
+        const toggleJapan = document.getElementById("toggleJapan");
+        const toggleWorld = document.getElementById("toggleWorld");
+
+        toggleJapan.addEventListener("click", () => {
+            mapImage.src = "https://github.com/183x/arukyo/blob/main/mvTYTCqbpQEfoqN1747654176_1747654294.png?raw=true";
+            toggleJapan.classList.add("active");
+            toggleWorld.classList.remove("active");
+        });
+
+        toggleWorld.addEventListener("click", () => {
+            mapImage.src = "https://github.com/183x/arukyo/blob/main/Gk3hbrd8HlFwpQp1747654536_1747654539.png?raw=true";
+            toggleWorld.classList.add("active");
+            toggleJapan.classList.remove("active");
+        });
     </script>
+
+
+
 </body>
 
 </html>
