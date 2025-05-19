@@ -181,6 +181,12 @@
     <!-- 記念日情報 -->
     <div id="elapsedTime" class="info-box"></div>
     <div id="nextAnniversary" class="info-box"></div>
+
+
+
+
+
+
     <!-- 音量ボタン -->
     <button id="soundToggleBtn" onclick="toggleMute()">🔇</button>
     <!-- 地図トグル -->
@@ -297,6 +303,134 @@
         });
     </script>
 
+
+
+    <div style="width: 100vw; max-width: 100%; overflow: hidden; position: relative; height: 40px;">
+        <iframe srcdoc='
+        <!DOCTYPE html>
+        <html lang="ja">
+        <head>
+          <meta charset="UTF-8" />
+          <style>
+            html, body {
+              margin: 0; padding: 0;
+              background: transparent;
+              overflow: hidden;
+              width: 100%;
+              height: 40px;
+              font-family: sans-serif;
+            }
+            canvas {
+              position: absolute;
+              top: 0; left: 0;
+              width: 100%;
+              height: 40px;
+              display: block;
+            }
+          </style>
+        </head>
+        <body>
+          <canvas id="canvas"></canvas>
+          <script>
+            const canvas = document.getElementById("canvas");
+            const ctx = canvas.getContext("2d");
+            let w, h;
+  
+            const offsetY = 30;
+            const paddingX = 60;
+  
+            function resize() {
+              w = canvas.width = canvas.clientWidth * devicePixelRatio;
+              h = canvas.height = canvas.clientHeight * devicePixelRatio;
+              ctx.setTransform(1, 0, 0, 1, 0, 0);
+              ctx.scale(devicePixelRatio, devicePixelRatio);
+            }
+  
+            window.addEventListener("resize", () => {
+              resize();
+              osaka.x = paddingX;
+              osaka.y = offsetY;
+              tokyo.x = canvas.clientWidth - paddingX;
+              tokyo.y = offsetY;
+            });
+            resize();
+  
+            const osaka = { x: paddingX, y: offsetY };
+            const tokyo = { x: canvas.clientWidth - paddingX, y: offsetY };
+            let beams = [];
+  
+            function drawCity(label, pos) {
+              ctx.fillStyle = "white";
+              ctx.font = "bold 18px sans-serif";
+              ctx.textBaseline = "middle";
+              ctx.fillText(label, pos.x - 20, pos.y);
+            }
+  
+            function createBeam(from, to) {
+              const angle = Math.atan2(to.y - from.y, to.x - from.x);
+              const speed = 18;
+              const dx = Math.cos(angle) * speed;
+              const dy = Math.sin(angle) * speed;
+              const beam = {
+                x: from.x,
+                y: from.y,
+                dx: dx,
+                dy: dy,
+                to: to
+              };
+              beams.push(beam);
+            }
+  
+            function drawBeam(beam) {
+              ctx.strokeStyle = "rgba(0,255,0,0.9)";
+              ctx.lineWidth = 2;
+              ctx.beginPath();
+              ctx.moveTo(beam.x, beam.y);
+              ctx.lineTo(beam.x - beam.dx * 0.9, beam.y - beam.dy * 0.9);
+              ctx.stroke();
+            }
+  
+            function animate() {
+              ctx.clearRect(0, 0, w, h);
+              drawCity("大阪", osaka);
+              drawCity("東京", tokyo);
+  
+              beams.forEach((beam, index) => {
+                drawBeam(beam);
+                beam.x += beam.dx;
+                beam.y += beam.dy;
+  
+                const dist = Math.hypot(beam.x - beam.to.x, beam.y - beam.to.y);
+                if (dist < 10) {
+                  beams.splice(index, 1);
+                }
+              });
+  
+              requestAnimationFrame(animate);
+            }
+            animate();
+  
+            let lastFromOsaka = false;
+            function loopBeams() {
+              lastFromOsaka = !lastFromOsaka;
+              const from = lastFromOsaka ? osaka : tokyo;
+              const to = lastFromOsaka ? tokyo : osaka;
+  
+              createBeam(from, to);
+  
+              // 発射間隔を短くしてビーム数を約1.5倍に増やす
+              const randomInterval = 50 + Math.random() * 1250;
+              setTimeout(loopBeams, randomInterval);
+            }
+            loopBeams();
+          </script>
+        </body>
+        </html>
+      ' width="100%" height="40px" style="position: absolute; top: 0; left: 0; border: none; background: transparent;" allowtransparency="true"></iframe>
+    </div>
+
+
+
     <footer style="
         text-align: center;
         padding: 20px;
@@ -308,6 +442,11 @@
         <p>♪ DECO*27 - 愛言葉Ⅳ feat. 初音ミク</p>
         </a>
     </footer>
+
+
+
+
+
 
 </body>
 
