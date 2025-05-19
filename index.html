@@ -109,10 +109,60 @@
             background-color: #ff69b4;
             color: white;
         }
+        /* ローディング画面 */
+        
+        #loadingScreen {
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(to bottom right, #ffe4ec, #ffc1da);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            font-family: 'Kaisei Tokumin', serif;
+            color: #ff69b4;
+            font-size: 28px;
+            animation: fadeIn 1s ease-in-out;
+            transition: opacity 1s ease;
+        }
+        /* ローディング用のアニメーション（ハートが軽く上下） */
+        
+        .heartbeat {
+            font-size: 40px;
+            animation: beat 1s infinite;
+        }
+        
+        @keyframes beat {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+        
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
     </style>
 </head>
 
 <body>
+
+    <!-- ローディング画面 -->
+    <div id="loadingScreen">
+        <div class="heartbeat"></div>
+        loading...
+    </div>
+
     <!-- 背景動画 -->
     <video id="bgVideo" autoplay loop muted playsinline>
     <source src="https://pixeldrain.com/api/file/ZLvLZ2kn" type="video/mp4" />
@@ -232,6 +282,17 @@
             mapImage.src = "https://github.com/183x/arukyo/blob/main/Gk3hbrd8HlFwpQp1747654536_1747654539.png?raw=true";
             toggleWorld.classList.add("active");
             toggleJapan.classList.remove("active");
+        });
+
+        // 背景動画の読み込み完了でローディング非表示
+        const video = document.getElementById("bgVideo");
+        const loadingScreen = document.getElementById("loadingScreen");
+
+        video.addEventListener("canplaythrough", () => {
+            loadingScreen.style.opacity = "0";
+            setTimeout(() => {
+                loadingScreen.style.display = "none";
+            }, 1000); // フェードアウトと同期
         });
     </script>
 
