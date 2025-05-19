@@ -5,149 +5,103 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ある＆きょーか</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kaisei+Tokumin:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kaisei+Tokumin:wght@700&display=swap" rel="stylesheet" />
+
     <style>
-        * {
+        body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-        
-        html,
-        body {
-            height: 100%;
             font-family: 'Kaisei Tokumin', serif;
+            color: white;
+            text-align: center;
+            height: 100vh;
             overflow: hidden;
-            color: #333;
         }
-        /* 背景動画 */
         
-        #bgVideo {
+        video#bgVideo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            object-fit: cover;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+        }
+        
+        .overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            object-fit: cover;
-            z-index: -2;
-            pointer-events: none;
-        }
-        /* 白フィルター */
-        
-        .white-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
             background: rgba(255, 255, 255, 0.3);
+            /* 白いフィルター */
             z-index: -1;
         }
         
-        .container {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            padding: 60px 20px;
-        }
-        
         h1 {
-            font-size: 3em;
-            color: #ff69b4;
-            text-shadow: 2px 2px 6px white;
-            margin-bottom: 20px;
+            font-size: 36px;
+            margin-top: 50px;
         }
         
-        h3 {
-            font-size: 1.5em;
-            margin-bottom: 20px;
-            color: #555;
-        }
-        
-        h4 {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.9);
-            color: #ff69b4;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-size: 1.2em;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 8px rgba(255, 105, 180, 0.4);
-            transition: box-shadow 0.3s ease;
-        }
-        
-        h4:hover {
-            box-shadow: 0 0 15px rgba(255, 105, 180, 0.8);
-        }
-        
-        .box {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            margin: 20px auto;
-            max-width: 90%;
-            border-radius: 20px;
-            box-shadow: 0 4px 10px rgba(255, 192, 203, 0.4);
+        #elapsedTime,
+        #nextAnniversary {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 20px;
             font-weight: bold;
-            font-size: 1.1em;
-            color: #333;
-            transition: box-shadow 0.3s ease;
+            color: #000;
+            margin: 20px auto;
+            width: fit-content;
         }
         
-        .box:hover {
-            box-shadow: 0 0 12px rgba(255, 105, 180, 0.7);
+        #soundToggleBtn {
+            font-family: 'Kaisei Tokumin', serif;
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 50px;
+            box-shadow: 0 4px 8px rgba(255, 105, 180, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 10;
         }
         
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 2em;
-            }
-            h3 {
-                font-size: 1em;
-            }
-            h4 {
-                font-size: 1em;
-                padding: 8px 16px;
-            }
+        #soundToggleBtn:hover {
+            box-shadow: 0 6px 12px rgba(255, 105, 180, 0.7);
+            transform: scale(1.05);
         }
     </style>
 </head>
 
-<body oncontextmenu="return false">
-
+<body>
     <!-- 背景動画 -->
-    <video id="bgVideo" autoplay loop playsinline muted>
-    <source src="https://my.microsoftpersonalcontent.com/personal/a74d39fdf7b7cc24/_layouts/15/download.aspx?UniqueId=e6278cb9-7e25-47fd-adae-ce23f5e09f94&Translate=false&tempauth=v1e.eyJzaXRlaWQiOiI5OWNjNDJjNy01ZmNkLTQ3MWUtOTNhYS0wYzY1NDRiMWJmZWIiLCJhcHBpZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDA0ODE3MTBhNCIsImF1ZCI6IjAwMDAwMDAzLTAwMDAtMGZmMS1jZTAwLTAwMDAwMDAwMDAwMC9teS5taWNyb3NvZnRwZXJzb25hbGNvbnRlbnQuY29tQDkxODgwNDBkLTZjNjctNGM1Yi1iMTEyLTM2YTMwNGI2NmRhZCIsImV4cCI6IjE3NDc2NDgxNjIifQ.lO9hQq15JhbulMMUwMUAibiq6QGU4oD5thzhF4a8uXQUZbToZzqafmBfhKfOKtaJ66XgikEr3DO_9gPiHali8B5tikWODZNAfutxnRvqzZwI7pJ_sphsuF3KMFrgRx8YncTv9p5dimbPl62QJxjyFAsbsDf2QmSFmzEUFl9WIijIllTIlxzhAXad-8ezWjmdF-sr5fhyGvfBGxXtx-hRg0gcApiJFyaQSZaKesyMuKyrxbsFyWkKIiP_FrGrSWxaW1Iz3SCMEuDokKntw4tjKaAH8WllHkysPyk3T4EoXFBCNnIctMHzsYHZDvc4CJWnUEEbVyloIy-GAJEsGzboZfHdyrRupXfVBFVIRvXFSyDtBjFvDWEsc1csJk8RwhVi9NfcuxWsdYZ9Pt8BK1pXhVBKF57362YnVUOptwxkuaU.e80YMwl3X2YrFlyT8qptoOPfuhF1mVZDuZrF1qVt5Fo&ApiVersion=2.0" type="video/mp4">
-    お使いのブラウザは動画再生に対応していません。
+    <video id="bgVideo" autoplay loop muted playsinline>
+    <source src="https://my.microsoftpersonalcontent.com/personal/a74d39fdf7b7cc24/_layouts/15/download.aspx?UniqueId=e6278cb9-7e25-47fd-adae-ce23f5e09f94&Translate=false&tempauth=v1e.eyJzaXRlaWQiOiI5OWNjNDJjNy01ZmNkLTQ3MWUtOTNhYS0wYzY1NDRiMWJmZWIiLCJhcHBpZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDA0ODE3MTBhNCIsImF1ZCI6IjAwMDAwMDAzLTAwMDAtMGZmMS1jZTAwLTAwMDAwMDAwMDAwMC9teS5taWNyb3NvZnRwZXJzb25hbGNvbnRlbnQuY29tQDkxODgwNDBkLTZjNjctNGM1Yi1iMTEyLTM2YTMwNGI2NmRhZCIsImV4cCI6IjE3NDc2NDgxNjIifQ.lO9hQq15JhbulMMUwMUAibiq6QGU4oD5thzhF4a8uXQUZbToZzqafmBfhKfOKtaJ66XgikEr3DO_9gPiHali8B5tikWODZNAfutxnRvqzZwI7pJ_sphsuF3KMFrgRx8YncTv9p5dimbPl62QJxjyFAsbsDf2QmSFmzEUFl9WIijIllTIlxzhAXad-8ezWjmdF-sr5fhyGvfBGxXtx-hRg0gcApiJFyaQSZaKesyMuKyrxbsFyWkKIiP_FrGrSWxaW1Iz3SCMEuDokKntw4tjKaAH8WllHkysPyk3T4EoXFBCNnIctMHzsYHZDvc4CJWnUEEbVyloIy-GAJEsGzboZfHdyrRupXfVBFVIRvXFSyDtBjFvDWEsc1csJk8RwhVi9NfcuxWsdYZ9Pt8BK1pXhVBKF57362YnVUOptwxkuaU.e80YMwl3X2YrFlyT8qptoOPfuhF1mVZDuZrF1qVt5Fo&ApiVersion=2.0" type="video/mp4" />
+    お使いのブラウザは video タグに対応していません。
   </video>
 
-    <!-- 白フィルター -->
-    <div class="white-overlay"></div>
+    <!-- 白いオーバーレイ -->
+    <div class="overlay"></div>
 
-    <!-- メインコンテンツ -->
-    <div class="container">
-        <h1>ある＆きょーか</h1>
-        <h3>記念日カウンター✨</h3>
-        <h4>♡2024年4月13日♡</h4>
-        <div id="elapsedTime" class="box"></div>
-        <div id="nextAnniversary" class="box"></div>
-    </div>
+    <!-- 記念日表示 -->
+    <h1>ある＆きょーか</h1>
+    <div id="elapsedTime"></div>
+    <div id="nextAnniversary"></div>
+
+    <!-- 音声トグルボタン -->
+    <button id="soundToggleBtn" onclick="toggleMute()">🔇</button>
 
     <script>
-        // 動画のミュート解除（自動再生）
-        window.addEventListener('load', () => {
-            const video = document.getElementById('bgVideo');
-            video.muted = false;
-            const playPromise = video.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(() => {
-                    video.muted = true;
-                    video.play();
-                });
-            }
-        });
-
-        // 記念日
-        const startDate = new Date(2024, 3, 13);
+        const startDate = new Date(2024, 3, 13); // 4月13日（0始まり）
+        const elapsedTimeElem = document.getElementById("elapsedTime");
+        const nextAnniversaryElem = document.getElementById("nextAnniversary");
 
         function updateElapsedTime() {
             const now = new Date();
@@ -171,8 +125,8 @@
                 days--;
             }
             if (days < 0) {
-                const previousMonth = new Date(now.getFullYear(), now.getMonth(), 0);
-                days += previousMonth.getDate();
+                const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+                days += prevMonth;
                 months--;
             }
             if (months < 0) {
@@ -180,33 +134,42 @@
                 years--;
             }
 
-            document.getElementById('elapsedTime').textContent =
-                `一緒に過ごしてから ${years}年${months}ヶ月${days}日${hours}時間${minutes}分${seconds}秒`;
+            elapsedTimeElem.textContent = `一緒に過ごしてから ${years}年${months}ヶ月${days}日 ${hours}時間${minutes}分${seconds}秒`;
         }
 
-        function updateNextMonthlyAnniversary() {
+        function updateNextAnniversary() {
             const now = new Date();
-            const anniversaryDay = 13;
+            let next = new Date(now.getFullYear(), now.getMonth(), 13);
+            if (now.getDate() > 13) next = new Date(now.getFullYear(), now.getMonth() + 1, 13);
 
-            let next = new Date(now.getFullYear(), now.getMonth(), anniversaryDay);
-            if (now.getDate() > anniversaryDay) {
-                next = new Date(now.getFullYear(), now.getMonth() + 1, anniversaryDay);
-            }
+            const diff = next - now;
+            const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
 
-            const timeDiff = next - now;
-            const daysLeft = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-            let monthsSinceStart = (next.getFullYear() - startDate.getFullYear()) * 12 + (next.getMonth() - startDate.getMonth());
-            const years = Math.floor(monthsSinceStart / 12);
-            const months = monthsSinceStart % 12;
+            let monthsPassed = (next.getFullYear() - startDate.getFullYear()) * 12 + (next.getMonth() - startDate.getMonth());
+            let years = Math.floor(monthsPassed / 12);
+            let months = monthsPassed % 12;
 
-            document.getElementById('nextAnniversary').textContent =
-                `あと ${daysLeft}日で ${years}年${months}ヶ月記念日！`;
+            nextAnniversaryElem.textContent = `あと${days}日で ${years}年${months}ヶ月記念日！`;
         }
 
-        updateElapsedTime();
-        updateNextMonthlyAnniversary();
         setInterval(updateElapsedTime, 1000);
-        setInterval(updateNextMonthlyAnniversary, 3600000);
+        setInterval(updateNextAnniversary, 60 * 1000);
+        updateElapsedTime();
+        updateNextAnniversary();
+
+        function toggleMute() {
+            const video = document.getElementById("bgVideo");
+            const btn = document.getElementById("soundToggleBtn");
+
+            video.muted = !video.muted;
+
+            if (video.muted) {
+                btn.textContent = "🔇";
+            } else {
+                btn.textContent = "🔊";
+                video.play();
+            }
+        }
     </script>
 </body>
 
